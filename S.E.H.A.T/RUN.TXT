@@ -1,0 +1,92 @@
+Here is the complete, step-by-step guide to run the **S.E.H.A.T** project:
+
+---
+
+### ⚡ Method 1: One-Click / Single Command (Fastest)
+
+A master runner is already set up to launch both the **FastAPI Backend** and the **React Frontend** together:
+
+1. Open PowerShell or Command Prompt in the project folder (`c:\Users\YASHASVI PANDEY\Desktop\S.E.H.A.T`).
+2. Run:
+   ```powershell
+   python run.py
+   ```
+   *(Or simply double-click [`start.bat`](file:///c:/Users/YASHASVI%20PANDEY/Desktop/S.E.H.A.T/start.bat) in File Explorer).*
+
+This concurrently boots:
+- **Backend API**: [http://localhost:8000](http://localhost:8000) (Swagger Docs: [http://localhost:8000/docs](http://localhost:8000/docs))
+- **Frontend Portal**: [http://localhost:5173](http://localhost:5173)
+
+---
+
+### 🖥️ Method 2: Running Components in Separate Terminals
+
+If you want dedicated terminal windows for logging and debugging:
+
+#### Step 1: Start the FastAPI Backend
+Open **Terminal 1**:
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+```
+- **API URL**: `http://localhost:8000`
+- **Swagger Documentation**: `http://localhost:8000/docs`
+
+#### Step 2: Start the React Frontend Dashboard
+Open **Terminal 2**:
+```powershell
+cd frontend
+npm run dev
+```
+- **Web App**: Open your browser at [http://localhost:5173](http://localhost:5173)
+
+---
+
+### 📱 Step 3: Connecting Live WhatsApp (UltraMsg)
+
+To test live WhatsApp messages, prescription photo scans, and queue booking from your phone:
+
+1. Open **Terminal 3** and launch the WhatsApp gateway:
+   ```powershell
+   .\.venv\Scripts\python.exe reply_whatsapp.py 8000
+   ```
+2. In another terminal, open an Ngrok tunnel to port 8000:
+   ```powershell
+   npx ngrok http 8000
+   ```
+3. Copy your forwarding URL (e.g., `https://abc-123.ngrok-free.app`).
+4. Go to your **UltraMsg Dashboard** -> **Instance Settings**:
+   - Turn **Webhook on Received** to **ON**.
+   - Turn **Webhook Download Media** to **ON** (needed for prescription OCR).
+   - Set **Webhook URL on Received** to:
+     ```
+     https://<your-ngrok-subdomain>.ngrok-free.app/ultramsg
+     ```
+5. Send a WhatsApp message from your phone to your UltraMsg number:
+   - Send **"Hi"** or **"Hello"** -> Receives main menu.
+   - Send **Location Pin 📍** or text **"DOCTOR"** -> Lists nearby clinics with 1-tap Google Maps directions.
+   - Reply **"1"** or **"2"** -> Books a live queue token.
+   - Send a **Prescription photo 📸** -> Runs Gemini Vision OCR and checks nearby chemist stocks.
+   - Send **"B+"** or **"O+"** -> Checks real-time blood bank inventory.
+
+---
+
+### 🧪 Step 4: Testing Notifications Directly (CLI)
+
+To test all 8 WhatsApp notifications (Doctor Calling, Position #2 Warning, Delays, Token Booking) without needing a phone:
+```powershell
+.\.venv\Scripts\python.exe test_notifications.py
+```
+
+---
+
+### 🔑 Seeded Login Credentials for Web Dashboards
+
+When logging into the Web Portal at [http://localhost:5173](http://localhost:5173):
+
+| Role | Identifier / Email | Password | What You Can Test |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@sehat.in` | `sehat2026` | Live metrics, doctor queues, chemist stocks, blood banks, audit logs |
+| **Doctor** | `+919999999999` | `sehat123` | Dr. Sharma's live queue, "Call Patient" button with chime, mark patient seen |
+| **Chemist** | `+918888888888` | `sehat123` | Mohan Chemists inventory, toggle medicine availability, add CDSCO drugs |
+
+Viewed project_status.md:1-26
